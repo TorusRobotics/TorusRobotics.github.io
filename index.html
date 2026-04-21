@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>VESC Airgap Control</title>
+<title>TMCS Airgap Control</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -231,7 +231,7 @@ td.ok { color:var(--accent3); } td.er { color:var(--danger); } td.gd { color:var
 </div>
 
 <header>
-  <h1><span class="dot" id="connDot"></span>VESC Airgap Control</h1>
+  <h1><span class="dot" id="connDot"></span>TMCS Airgap Control</h1>
   <span class="badge">MASTER</span>
   <span class="badge" id="slaveBadge" style="border-color:var(--muted);color:var(--muted);">SLAVE — —</span>
   <div class="api-status"><div class="api-dot" id="apiDot"></div><span id="apiStatus">DB offline</span></div>
@@ -387,7 +387,7 @@ td.ok { color:var(--accent3); } td.er { color:var(--danger); } td.gd { color:var
       Master Ramp Test
     </div>
     <div style="font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.5;">
-      Ramps duty 0 → 95% on master VESC, holds, captures <strong style="color:var(--gold);">peak RPM</strong> and values, then stops.
+      Ramps duty 0 → 95% on master TMCS, holds, captures <strong style="color:var(--gold);">peak RPM</strong> and values, then stops.
     </div>
     <div class="row" style="margin-bottom:8px;">
       <div class="field"><label>Ramp Duration (ms)</label><input id="rampDuration" value="3000"></div>
@@ -438,7 +438,7 @@ td.ok { color:var(--accent3); } td.er { color:var(--danger); } td.gd { color:var
         <div class="rvu">RPM at 48V (RPM/V × 48)</div>
       </div>
     </div>
-    <div style="margin-top:8px;padding:7px;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.12);border-radius:5px;font-size:10px;color:var(--muted);line-height:1.5;">⚠ Sends duty to <strong style="color:#fff;">master VESC directly</strong> — no CAN. Motor must spin freely.</div>
+    <div style="margin-top:8px;padding:7px;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.12);border-radius:5px;font-size:10px;color:var(--muted);line-height:1.5;">⚠ Sends duty to <strong style="color:#fff;">master TMCS directly</strong> — no CAN. Motor must spin freely.</div>
   </div>
 
   <!-- ── QUICK MOTOR LOOKUP ── -->
@@ -475,9 +475,9 @@ td.ok { color:var(--accent3); } td.er { color:var(--danger); } td.gd { color:var
 </div><!-- /wrap -->
 
 <script>
-const CMD_RL=25,CMD_FLUX=57,CMD_CAN_FWD=34,CMD_SET_DUTY=5,VESC_GET_VALUES=4;
+const CMD_RL=25,CMD_FLUX=57,CMD_CAN_FWD=34,CMD_SET_DUTY=5,TMCS_GET_VALUES=4;
 const API="https://torusroboticsgithubio-production.up.railway.app/api"
-const LS_KEY="vesc_airgap_state_v3";
+const LS_KEY="TMCS_airgap_state_v3";
 
 let port,reader,writer,buf=[],pollTimer=null,pktCount=0,peakTach=null;
 let connected=false,runActive=false,runStartTach=null,runTargetTach=null;
@@ -863,7 +863,7 @@ function exportCSV(){
   const csv=cols.join(',')+'\n'+rows.map(r=>cols.map(c=>escCSV(r[c])).join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=`vesc_airgap_${new Date().toISOString().slice(0,10)}.csv`;
+  const a=document.createElement('a');a.href=url;a.download=`TMCS_airgap_${new Date().toISOString().slice(0,10)}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
   log(`Exported ${rows.length} records to CSV`,'db');
 }
